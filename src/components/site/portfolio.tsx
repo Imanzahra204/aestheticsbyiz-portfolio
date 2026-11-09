@@ -44,7 +44,7 @@ function FeaturedCard({ project, onOpen }: { project: Project; onOpen: () => voi
       className={`group relative h-[380px] overflow-hidden rounded-[1.75rem] border bg-card text-left sm:h-[460px] ${project.span ?? ""}`}
     >
       <ProjectImage project={project} className="absolute inset-0 h-full w-full" />
-      <div aria-hidden className="bg-fade-bottom absolute inset-x-0 bottom-0 h-2/3 opacity-90" />
+      <div aria-hidden className="bg-fade-bottom absolute inset-x-0 bottom-0 h-3/4" />
       <span className="eyebrow glass absolute left-5 top-5 rounded-full px-3 py-1.5 text-foreground">
         {project.number}
       </span>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowUpRight, ArrowDown } from "lucide-react";
 import portrait from "@/assets/iman-zahra-portrait.png.asset.json";
 import { CONTACT, PROJECTS, ROLES } from "@/lib/portfolio-data";
@@ -22,18 +22,15 @@ function RotatingRole() {
   }, []);
   return (
     <span className="relative inline-flex h-[1.4em] overflow-hidden align-bottom">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={ROLES[i]}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.5, ease }}
-          className="font-serif italic text-champagne"
-        >
-          {ROLES[i]}
-        </motion.span>
-      </AnimatePresence>
+      <motion.span
+        key={ROLES[i]}
+        initial={{ y: "100%", opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease }}
+        className="font-serif italic text-champagne"
+      >
+        {ROLES[i]}
+      </motion.span>
     </span>
   );
 }
@@ -116,7 +113,7 @@ export function Hero() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.9, ease, delay: 0.85 }}
-                className="mt-8 flex max-w-[28rem] flex-wrap gap-3"
+                className="mt-8 flex max-w-[30rem] flex-wrap gap-3"
               >
                 <Button asChild variant="hero" size="xl">
                   <a href="#portfolio">
