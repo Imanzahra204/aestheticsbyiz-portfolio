@@ -208,7 +208,7 @@ export function Hero() {
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.3, ease, delay: 0.2 }}
-            className="pointer-events-none absolute bottom-0 left-[37%] z-10 hidden h-[96%] w-auto object-contain object-bottom drop-shadow-[0_30px_40px_oklch(0.1_0.02_18/0.55)] lg:block"
+            className="pointer-events-none absolute bottom-0 left-[37%] z-10 hidden h-[96%] w-auto object-contain object-bottom drop-portrait lg:block"
           />
         </motion.div>
 

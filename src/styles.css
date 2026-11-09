@@ -202,6 +202,10 @@
   box-shadow: var(--shadow-glow);
 }
 
+@utility drop-portrait {
+  filter: drop-shadow(0 30px 40px oklch(0.1 0.02 18 / 0.55));
+}
+
 @utility glass {
   background: var(--nav);
   backdrop-filter: blur(18px) saturate(140%);
