@@ -81,16 +81,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Iman Zahra — aestheticsbyiz" },
+      {
+        name: "description",
+        content:
+          "Iman Zahra (aestheticsbyiz): Digital Artist, Creative Designer, Content Creator and Web Developer.",
+      },
+      { name: "author", content: "Iman Zahra" },
+      { name: "theme-color", content: "#100D0D" },
+      { property: "og:title", content: "Iman Zahra — aestheticsbyiz" },
+      {
+        property: "og:description",
+        content: "Digital Artist, Creative Designer, Content Creator and Web Developer.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:opsz,wght@9..40,300..700&family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Space+Grotesk:wght@400;500;600&display=swap",
+      },
       {
         rel: "stylesheet",
         href: appCss,
