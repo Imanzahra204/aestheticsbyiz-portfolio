@@ -31,7 +31,15 @@ function ProjectImage({ project, className = "" }: { project: Project; className
   );
 }
 
-function FeaturedCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
+function FeaturedCard({
+  project,
+  span,
+  onOpen,
+}: {
+  project: Project;
+  span: string;
+  onOpen: () => void;
+}) {
   return (
     <motion.button
       layout
@@ -41,7 +49,7 @@ function FeaturedCard({ project, onOpen }: { project: Project; onOpen: () => voi
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.7, ease }}
-      className={`group relative h-[380px] overflow-hidden rounded-[1.75rem] border bg-card text-left sm:h-[460px] ${project.span ?? ""}`}
+      className={`group relative h-[380px] overflow-hidden rounded-[1.75rem] border bg-card text-left sm:h-[460px] ${span}`}
     >
       <ProjectImage project={project} className="absolute inset-0 h-full w-full" />
       <div aria-hidden className="bg-fade-bottom absolute inset-x-0 bottom-0 h-3/4" />
@@ -150,7 +158,12 @@ export function Portfolio() {
           <motion.div layout className="mt-12 grid grid-flow-dense grid-cols-1 gap-5 lg:grid-cols-12">
             <AnimatePresence mode="popLayout">
               {featured.map((p) => (
-                <FeaturedCard key={p.id} project={p} onOpen={() => setActive(p)} />
+                <FeaturedCard
+                  key={p.id}
+                  project={p}
+                  span={filter === "All" ? (p.span ?? "lg:col-span-6") : "lg:col-span-6"}
+                  onOpen={() => setActive(p)}
+                />
               ))}
             </AnimatePresence>
           </motion.div>

@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Single-page portfolio: sections live in `src/components/site/*`, composed in `src/routes/index.tsx`; content (projects, contact links) lives in `src/lib/portfolio-data.ts` so copy changes never touch layout code.
+- Contact form has no backend: it validates with zod (`src/lib/contact.ts`) and hands off via mailto/WhatsApp links — keeps the site backend-free until a real inbox is wanted.
+- Images are Lovable Assets pointers under `src/assets/` (portrait + `work/`), not hotlinked, so third-party image hosts can't break the site.
+- Avoid framer-motion `AnimatePresence mode="wait"` for looping text; it stalls under React 19 — use keyed `motion` elements instead.
