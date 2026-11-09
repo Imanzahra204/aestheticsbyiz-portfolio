@@ -8,6 +8,7 @@ import {
   Megaphone,
   ArrowUpRight,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Reveal, SectionHeading } from "./reveal";
 
 const SERVICES = [
@@ -94,8 +95,13 @@ export function Services() {
 
         <ul className="mt-14 border-t">
           {SERVICES.map(({ title, Icon, text, includes }, i) => (
-            <Reveal key={title} delay={0.03 * i}>
-              <li className="group relative grid gap-5 overflow-hidden border-b py-8 transition-colors duration-500 sm:px-6 md:grid-cols-[5rem_1.1fr_1.4fr_auto] md:items-start md:gap-8 md:py-10">
+            <motion.li
+              key={title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.03 * i }}
+              className="group relative grid gap-5 overflow-hidden border-b py-8 transition-colors duration-500 sm:px-6 md:grid-cols-[5rem_1.1fr_1.4fr_auto] md:items-start md:gap-8 md:py-10">
                 <span
                   aria-hidden
                   className="absolute inset-0 origin-left scale-x-0 bg-gradient-burgundy transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-x-100"
@@ -131,8 +137,7 @@ export function Services() {
                 >
                   <ArrowUpRight className="h-5 w-5" />
                 </a>
-              </li>
-            </Reveal>
+            </motion.li>
           ))}
         </ul>
       </div>
