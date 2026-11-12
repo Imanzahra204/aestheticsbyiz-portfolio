@@ -6,9 +6,25 @@ import parbat from "@/assets/work/parbat.jpg.asset.json";
 import grapple from "@/assets/work/grapple.png.asset.json";
 import cravin from "@/assets/work/cravin.png.asset.json";
 import romelia from "@/assets/work/romelia.png.asset.json";
-import mrfood from "@/assets/work/mrfood.png.asset.json";
 import tpws from "@/assets/work/tpws.png.asset.json";
 import rollzo from "@/assets/work/rollzo.png.asset.json";
+
+/** Every gallery image pointer under src/assets/work/<project>/<name>.webp.asset.json. */
+const GALLERY_ASSETS = import.meta.glob<{ url: string }>("../assets/work/*/*.asset.json", {
+  eager: true,
+  import: "default",
+});
+
+/** Resolve a gallery image by "<project>/<name>"; fails loudly if the pointer is missing. */
+function work(key: string): string {
+  const asset = GALLERY_ASSETS[`../assets/work/${key}.webp.asset.json`];
+  if (!asset) throw new Error(`Missing portfolio image: ${key}`);
+  return asset.url;
+}
+
+const img = (key: string, caption?: string): Media =>
+  caption ? { kind: "image", src: work(key), caption } : { kind: "image", src: work(key) };
+const yt = (id: string): Media => ({ kind: "youtube", id });
 
 export const CONTACT = {
   email: "zahraiman622@gmail.com",
@@ -39,18 +55,29 @@ export const CATEGORIES = [
 ] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+export type Media =
+  | { kind: "image"; src: string; caption?: string }
+  | { kind: "youtube"; id: string; caption?: string }
+  | { kind: "facebook"; href: string; caption?: string };
+
+export type GallerySection = { title: string; items: Media[] };
+
 export type Project = {
   id: string;
   number: string;
   client: string;
   title: string;
-  industry: string;
+  industry?: string;
   description: string;
   showcase: string[];
   categories: Exclude<Category, "All">[];
   image: string;
   /** Logos and small marks are shown contained rather than cropped. */
   fit?: "cover" | "contain";
+  /** Background behind a contained cover: burgundy (default) or champagne for logos on white. */
+  tone?: "dark" | "light";
+  /** Work samples shown inside the project pop-up, grouped by type. */
+  gallery?: GallerySection[];
   featured: boolean;
   /** Grid span used in the featured editorial grid (lg screens). */
   span?: string;
@@ -73,6 +100,13 @@ export const PROJECTS: Project[] = [
     ],
     categories: ["Branding"],
     image: nexus.url,
+    gallery: [
+      { title: "Brand identity", items: [img("nexus/identity", "Brand identity board")] },
+      {
+        title: "Social media posts",
+        items: ["10", "11", "12", "13", "14", "15", "16", "17"].map((n) => img(`nexus/post-${n}`)),
+      },
+    ],
     featured: true,
     span: "lg:col-span-8",
   },
@@ -84,9 +118,32 @@ export const PROJECTS: Project[] = [
     industry: "Food Delivery",
     description:
       "Created engaging short-form reels and social media graphics to strengthen digital engagement.",
-    showcase: ["Reel thumbnails", "Social media graphics", "Video previews"],
-    categories: ["Social Media", "Video"],
+    showcase: ["Social media management", "Social media posts", "Feature graphics for Google"],
+    categories: ["Social Media", "Graphic Design"],
     image: craveeo.url,
+    gallery: [
+      {
+        title: "Social media management",
+        items: [
+          "hand-design",
+          "cafe-kunj",
+          "insta-splitter",
+          "why-choose",
+          "why-the-stress",
+          "phone",
+          "puzzle",
+          "iphone-trend",
+        ].map((n) => img(`craveeo/${n}`)),
+      },
+      {
+        title: "Feature graphics for Google",
+        items: [
+          img("craveeo/feature-customer", "Customer"),
+          img("craveeo/feature-merchant", "Merchant"),
+          img("craveeo/feature-rider", "Rider"),
+        ],
+      },
+    ],
     featured: true,
     span: "lg:col-span-4",
   },
@@ -101,6 +158,12 @@ export const PROJECTS: Project[] = [
     showcase: ["Promotional graphics", "Informational designs", "Healthcare technology visuals"],
     categories: ["Graphic Design"],
     image: homalix.url,
+    gallery: [
+      {
+        title: "Social media posts",
+        items: ["3", "4", "5", "6", "7"].map((n) => img(`homalix/post-${n}`)),
+      },
+    ],
     featured: true,
     span: "lg:col-span-4",
   },
@@ -110,11 +173,21 @@ export const PROJECTS: Project[] = [
     client: "Novelle Fragrance",
     title: "Luxury Branding",
     industry: "Perfume & Lifestyle",
-    description:
-      "Created social media branding and launch visuals to support product promotion.",
-    showcase: ["Fragrance promotional creatives", "Social media layouts", "Product campaign visuals"],
+    description: "Created social media branding and launch visuals to support product promotion.",
+    showcase: [
+      "Fragrance promotional creatives",
+      "Social media layouts",
+      "Product campaign visuals",
+    ],
     categories: ["Branding", "Social Media"],
     image: novelle.url,
+    gallery: [
+      { title: "Branding", items: [img("novelle/post-8", "Brand identity board")] },
+      {
+        title: "Social media posts",
+        items: ["1", "2", "3", "5"].map((n) => img(`novelle/post-${n}`)),
+      },
+    ],
     featured: true,
     span: "lg:col-span-8",
   },
@@ -125,9 +198,20 @@ export const PROJECTS: Project[] = [
     title: "AI Video Production",
     industry: "Food & Manufacturing",
     description: "Produced AI-powered video content using creative visual storytelling.",
-    showcase: ["Video thumbnails", "Selected video previews", "AI-generated visual sequences"],
+    showcase: ["AI-generated video", "Creative visual storytelling"],
     categories: ["Video", "AI Content"],
     image: parbat.url,
+    gallery: [
+      {
+        title: "AI-created video",
+        items: [
+          {
+            kind: "facebook",
+            href: "https://www.facebook.com/reel/1028930523382561/",
+          },
+        ],
+      },
+    ],
     featured: true,
     span: "lg:col-span-7",
   },
@@ -139,9 +223,20 @@ export const PROJECTS: Project[] = [
     industry: "Sportswear & Brazilian Jiu-Jitsu",
     description:
       "Worked as a Digital Creator, developing creative content for Brazilian Jiu-Jitsu GI suits.",
-    showcase: ["Product promotional visuals", "Social media content", "Sportswear branding"],
-    categories: ["Social Media"],
+    showcase: [
+      "AI-created videos",
+      "Product promotional visuals",
+      "Social media content",
+      "Sportswear branding",
+    ],
+    categories: ["Social Media", "Video", "AI Content"],
     image: grapple.url,
+    gallery: [
+      {
+        title: "AI-created videos",
+        items: [yt("64lJizGDHY8"), yt("vqwBPtCWHbU"), yt("N2gYII5CIeY")],
+      },
+    ],
     fit: "contain",
     featured: true,
     span: "lg:col-span-5",
@@ -154,9 +249,29 @@ export const PROJECTS: Project[] = [
     industry: "Restaurant",
     description:
       "Social media content management, restaurant menu design and screen-printing designs.",
-    showcase: ["Social media content management", "Restaurant menu design", "Screen-printing designs"],
+    showcase: [
+      "Social media content management",
+      "Restaurant menu design",
+      "Screen-printing designs",
+    ],
     categories: ["Social Media", "Graphic Design"],
     image: cravin.url,
+    gallery: [
+      { title: "Social media", items: [img("cravin/banner")] },
+      {
+        title: "Menu design",
+        items: [
+          img("cravin/menu-cover", "Cover page"),
+          img("cravin/menu-burgers", "Burgers & sandwiches"),
+          img("cravin/menu-coffee", "Coffee"),
+          img("cravin/menu-waffles", "Waffles"),
+        ],
+      },
+      {
+        title: "Screen printing",
+        items: [img("cravin/print-front", "Front layout"), img("cravin/print-back", "Back layout")],
+      },
+    ],
     featured: false,
   },
   {
@@ -169,6 +284,17 @@ export const PROJECTS: Project[] = [
     showcase: ["Promotional graphics", "Social media posts", "Product launch visuals"],
     categories: ["Graphic Design", "Social Media"],
     image: romelia.url,
+    gallery: [
+      {
+        title: "Social media posts",
+        items: [
+          img("romelia/banner"),
+          img("romelia/coming-soon", "Coming soon"),
+          img("romelia/about-us", "About us"),
+          img("romelia/post-3"),
+        ],
+      },
+    ],
     featured: false,
   },
   {
@@ -178,9 +304,16 @@ export const PROJECTS: Project[] = [
     title: "Restaurant Design",
     industry: "Restaurant",
     description: "Professional menu design and print-ready materials.",
-    showcase: ["Professional menu design", "Print-ready materials"],
+    showcase: ["Professional menu design", "Printable bag design", "Print-ready materials"],
     categories: ["Graphic Design"],
-    image: mrfood.url,
+    image: work("mrfood/logo"),
+    gallery: [
+      { title: "Printable bag", items: [img("mrfood/printable-bag")] },
+      {
+        title: "Menu design",
+        items: [img("mrfood/menu-page-1", "Page 1"), img("mrfood/menu-page-2", "Page 2")],
+      },
+    ],
     featured: false,
   },
   {
@@ -193,6 +326,16 @@ export const PROJECTS: Project[] = [
     showcase: ["Thalassemia awareness graphics", "Blood donation campaign content"],
     categories: ["Graphic Design", "Social Media"],
     image: tpws.url,
+    gallery: [
+      {
+        title: "Awareness campaign posts",
+        items: [
+          img("tpws/awareness", "Awareness"),
+          img("tpws/storytelling", "Emotional storytelling"),
+          img("tpws/services-impact", "Services & impact"),
+        ],
+      },
+    ],
     featured: false,
   },
   {
@@ -202,9 +345,37 @@ export const PROJECTS: Project[] = [
     title: "Restaurant Branding",
     industry: "Restaurant",
     description: "Restaurant menu design with visually appealing menu layouts.",
-    showcase: ["Restaurant menu design", "Visually appealing menu layouts"],
-    categories: ["Graphic Design"],
+    showcase: ["Social media posts", "Restaurant menu design", "Visually appealing menu layouts"],
+    categories: ["Graphic Design", "Social Media"],
     image: rollzo.url,
     featured: false,
+    gallery: [
+      {
+        title: "Social media posts",
+        items: ["1", "2", "3", "4"].map((n) => img(`rollzo/post-${n}`)),
+      },
+      {
+        title: "Menu design",
+        items: [
+          img("rollzo/menu-add-on", "Add-ons"),
+          img("rollzo/menu-mojitos", "Mojitos"),
+          img("rollzo/menu-sandwiches", "Sandwiches"),
+        ],
+      },
+    ],
+  },
+  {
+    id: "ns-group",
+    number: "12",
+    client: "NS Group",
+    title: "AI Creative Specialist",
+    description: "Worked as an AI Creative Specialist, producing AI-created video content.",
+    showcase: ["AI-created videos"],
+    categories: ["AI Content", "Video"],
+    image: work("ns-group/logo"),
+    fit: "contain",
+    tone: "light",
+    featured: false,
+    gallery: [{ title: "AI-created videos", items: [yt("QBkYgvjvEAY"), yt("FBHkp9-5s10")] }],
   },
 ];
