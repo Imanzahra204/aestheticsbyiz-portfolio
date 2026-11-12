@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "./reveal";
 
 const STATS = [
-  { value: "11", label: "Brand collaborations" },
+  { value: "12", label: "Brand collaborations" },
   { value: "7", label: "Creative services" },
   { value: "8", label: "Core skills" },
   { value: "2028", label: "BSCS, expected" },

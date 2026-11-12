@@ -80,7 +80,7 @@ export const PROJECTS: Project[] = [
     id: "craveeo",
     number: "03",
     client: "Craveeo",
-    title: "Social Media & Video Content",
+    title: "Social Media Manager",
     industry: "Food Delivery",
     description:
       "Created engaging short-form reels and social media graphics to strengthen digital engagement.",
