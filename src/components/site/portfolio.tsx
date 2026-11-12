@@ -132,7 +132,7 @@ function VideoEmbed({ item, client }: { item: Exclude<Media, ImageItem>; client:
   const src =
     item.kind === "youtube"
       ? `https://www.youtube-nocookie.com/embed/${item.id}?rel=0`
-      : `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.href)}&show_text=false&width=320&t=0`;
+      : `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.href)}&show_text=false&width=288&height=512&t=0`;
   const link = item.kind === "youtube" ? `https://youtube.com/shorts/${item.id}` : item.href;
   return (
     <figure className="w-full max-w-[18rem]">
