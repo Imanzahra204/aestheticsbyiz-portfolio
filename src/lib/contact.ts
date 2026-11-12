@@ -1,6 +1,18 @@
 import { z } from "zod";
 import { CONTACT } from "./portfolio-data";
 
+export const SERVICE_OPTIONS = [
+  "Graphic Design",
+  "Brand Identity Development",
+  "Video Editing",
+  "AI Video Creation",
+  "Social Media Management",
+  "Web Development",
+  "Logo Animation",
+  "Thumbnail Design",
+  "Other / Custom Project",
+] as const;
+
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Please enter your full name").max(100, "Name is too long"),
   email: z
@@ -9,7 +21,7 @@ export const contactSchema = z.object({
     .min(1, "Please enter your email")
     .email("Please enter a valid email address")
     .max(255, "Email is too long"),
-  subject: z.string().trim().min(3, "Please add a short subject").max(150, "Subject is too long"),
+  subject: z.string().refine((v) => (SERVICE_OPTIONS as readonly string[]).includes(v), "Please choose a service"),
   details: z
     .string()
     .trim()
