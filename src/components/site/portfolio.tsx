@@ -394,7 +394,7 @@ export function Portfolio() {
             </div>
             <motion.div
               layout
-              className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-5"
+              className="mt-10 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6"
             >
               <AnimatePresence mode="popLayout">
                 {more.map((p) => (
