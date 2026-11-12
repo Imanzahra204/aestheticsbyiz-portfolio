@@ -22,7 +22,8 @@ function work(key: string): string {
   return asset.url;
 }
 
-const img = (key: string, caption?: string): Media => ({ kind: "image", src: work(key), caption });
+const img = (key: string, caption?: string): Media =>
+  caption ? { kind: "image", src: work(key), caption } : { kind: "image", src: work(key) };
 const yt = (id: string): Media => ({ kind: "youtube", id });
 
 export const CONTACT = {
