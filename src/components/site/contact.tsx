@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SERVICE_OPTIONS } from "@/lib/contact";
 import { BehanceIcon, InstagramIcon, LinkedinIcon, WhatsappIcon } from "./social-icons";
 import { Reveal } from "./reveal";
 
@@ -160,15 +162,21 @@ export function Contact() {
               </div>
               <div className="sm:col-span-2">
                 <Label htmlFor="subject" className="eyebrow text-muted-foreground">Subject</Label>
-                <Input
-                  id="subject"
-                  value={values.subject}
-                  onChange={(e) => update("subject")(e.target.value)}
-                  aria-invalid={!!errors.subject}
-                  aria-describedby={errors.subject ? "subject-error" : undefined}
-                  placeholder="Brand identity, reels, website…"
-                  className={`mt-2 ${fieldClass}`}
-                />
+                <Select value={values.subject} onValueChange={(v) => update("subject")(v)}>
+                  <SelectTrigger
+                    id="subject"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? "subject-error" : undefined}
+                    className={`mt-2 ${fieldClass}`}
+                  >
+                    <SelectValue placeholder="Choose a service" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {SERVICE_OPTIONS.map((s) => (
+                      <SelectItem key={s} value={s}>{s}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {err("subject")}
               </div>
               <div className="sm:col-span-2">
