@@ -172,9 +172,12 @@ export const PROJECTS: Project[] = [
     client: "Novelle Fragrance",
     title: "Luxury Branding",
     industry: "Perfume & Lifestyle",
-    description:
-      "Created social media branding and launch visuals to support product promotion.",
-    showcase: ["Fragrance promotional creatives", "Social media layouts", "Product campaign visuals"],
+    description: "Created social media branding and launch visuals to support product promotion.",
+    showcase: [
+      "Fragrance promotional creatives",
+      "Social media layouts",
+      "Product campaign visuals",
+    ],
     categories: ["Branding", "Social Media"],
     image: novelle.url,
     gallery: [
@@ -228,7 +231,10 @@ export const PROJECTS: Project[] = [
     categories: ["Social Media", "Video", "AI Content"],
     image: grapple.url,
     gallery: [
-      { title: "AI-created videos", items: [yt("64lJizGDHY8"), yt("vqwBPtCWHbU"), yt("N2gYII5CIeY")] },
+      {
+        title: "AI-created videos",
+        items: [yt("64lJizGDHY8"), yt("vqwBPtCWHbU"), yt("N2gYII5CIeY")],
+      },
     ],
     fit: "contain",
     featured: true,
@@ -242,7 +248,11 @@ export const PROJECTS: Project[] = [
     industry: "Restaurant",
     description:
       "Social media content management, restaurant menu design and screen-printing designs.",
-    showcase: ["Social media content management", "Restaurant menu design", "Screen-printing designs"],
+    showcase: [
+      "Social media content management",
+      "Restaurant menu design",
+      "Screen-printing designs",
+    ],
     categories: ["Social Media", "Graphic Design"],
     image: cravin.url,
     gallery: [
