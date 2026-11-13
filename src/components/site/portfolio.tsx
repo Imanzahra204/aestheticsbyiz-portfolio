@@ -7,6 +7,7 @@ import {
   ChevronRight,
   ExternalLink,
   Maximize2,
+  Play,
 } from "lucide-react";
 import {
   CATEGORIES,
@@ -155,6 +156,64 @@ function VideoEmbed({ item, client }: { item: Exclude<Media, ImageItem>; client:
         Watch on {item.kind === "youtube" ? "YouTube" : "Facebook"}{" "}
         <ExternalLink className="h-3 w-3" />
       </a>
+    </figure>
+  );
+}
+
+type VideoItem = Exclude<Media, ImageItem>;
+
+function ReelCard({ project, item, onOpen }: { project: Project; item: VideoItem; onOpen: () => void }) {
+  const [playing, setPlaying] = useState(false);
+  const isYt = item.kind === "youtube";
+  const src = isYt
+    ? `https://www.youtube-nocookie.com/embed/${item.id}?rel=0&autoplay=1`
+    : `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(item.href)}&show_text=false&width=288&height=512&t=0`;
+  const showFrame = playing || !isYt;
+  return (
+    <figure className="w-[15rem] shrink-0 snap-start sm:w-[16rem]">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border bg-card shadow-elegant">
+        {showFrame ? (
+          <iframe
+            src={src}
+            title={`${project.client} — AI video`}
+            loading="lazy"
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            allowFullScreen
+            className="absolute inset-0 h-full w-full border-0"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setPlaying(true)}
+            aria-label={`Play ${project.client} video`}
+            className="group absolute inset-0"
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`}
+              alt=""
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div aria-hidden className="bg-fade-bottom absolute inset-0" />
+            <span className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-champagne text-champagne-foreground shadow-elegant transition-transform duration-500 group-hover:scale-110">
+              <Play className="ml-1 h-6 w-6 fill-current" />
+            </span>
+          </button>
+        )}
+        <span className="eyebrow glass pointer-events-none absolute left-3 top-3 rounded-full px-3 py-1.5 text-foreground">
+          {project.client}
+        </span>
+      </div>
+      <figcaption className="mt-3">
+        <p className="text-foreground">{project.client}</p>
+        <button
+          type="button"
+          onClick={onOpen}
+          className="eyebrow mt-1 inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-champagne"
+        >
+          View brand case study <ArrowUpRight className="h-3 w-3" />
+        </button>
+      </figcaption>
     </figure>
   );
 }
@@ -308,6 +367,17 @@ function Lightbox({
 export function Portfolio() {
   const [filter, setFilter] = useState<Category>("All");
   const [active, setActive] = useState<Project | null>(null);
+  const reels = useMemo(
+    () =>
+      PROJECTS.flatMap((project) =>
+        (project.gallery ?? []).flatMap((sec) =>
+          sec.items
+            .filter((m): m is VideoItem => m.kind !== "image")
+            .map((item) => ({ project, item })),
+        ),
+      ),
+    [],
+  );
   const [zoom, setZoom] = useState<number | null>(null);
   const activeImages = useMemo(
     () =>
@@ -380,6 +450,29 @@ export function Portfolio() {
               ))}
             </AnimatePresence>
           </motion.div>
+        )}
+
+        {reels.length > 0 && (
+          <div className="mt-24">
+            <div className="flex items-end justify-between gap-6 border-b pb-6">
+              <h3 className="text-3xl text-foreground sm:text-4xl">
+                AI &amp; video <em className="text-champagne">reels</em>
+              </h3>
+              <span className="eyebrow hidden text-muted-foreground sm:block">
+                {reels.length} videos
+              </span>
+            </div>
+            <div className="-mx-6 mt-10 flex snap-x gap-5 overflow-x-auto px-6 pb-4">
+              {reels.map(({ project, item }) => (
+                <ReelCard
+                  key={item.kind === "youtube" ? item.id : item.href}
+                  project={project}
+                  item={item}
+                  onOpen={() => setActive(project)}
+                />
+              ))}
+            </div>
+          </div>
         )}
 
         {more.length > 0 && (
