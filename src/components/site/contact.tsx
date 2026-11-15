@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowUpRight, Mail, Send } from "lucide-react";
 import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
 import { CONTACT } from "@/lib/portfolio-data";
 import { buildMailto, buildWhatsApp, contactSchema, type ContactInput } from "@/lib/contact";
 import { Button } from "@/components/ui/button";
@@ -55,12 +56,39 @@ export function Contact() {
     return parsed.data;
   };
 
-  const sendEmail = (e: FormEvent) => {
+  const [sending, setSending] = useState(false);
+
+  const sendEmail = async (e: FormEvent) => {
     e.preventDefault();
     const data = validate();
     if (!data) return;
-    window.location.href = buildMailto(data);
-    toast.success("Opening your email app — just press send.");
+    setSending(true);
+    try {
+      await emailjs.send(
+        "service_ytf7tml",
+        "template_w2bq3hj",
+        {
+          name: data.name,
+          from_name: data.name,
+          email: data.email,
+          from_email: data.email,
+          reply_to: data.email,
+          subject: data.subject,
+          service: data.subject,
+          message: data.details,
+          details: data.details,
+          to_name: "Iman Zahra",
+        },
+        { publicKey: "1vQ-CKJyMXXGbA_lg" },
+      );
+      toast.success("Message sent! I'll get back to you soon.");
+      setValues(EMPTY);
+    } catch {
+      toast.error("Couldn't send right now — opening your email app instead.");
+      window.location.href = buildMailto(data);
+    } finally {
+      setSending(false);
+    }
   };
 
   const sendWhatsApp = () => {
@@ -196,16 +224,15 @@ export function Contact() {
             </div>
 
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button type="submit" variant="hero" size="xl" className="flex-1">
-                Send Message <Send />
+              <Button type="submit" variant="hero" size="xl" className="flex-1" disabled={sending}>
+                {sending ? "Sending…" : "Send Message"} <Send />
               </Button>
               <Button type="button" variant="ghostLine" size="xl" onClick={sendWhatsApp}>
                 <WhatsappIcon /> Via WhatsApp
               </Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">
-              "Send Message" opens your email app with everything filled in, addressed to{" "}
-              {CONTACT.email}.
+              Your message is delivered straight to {CONTACT.email}.
             </p>
           </form>
         </Reveal>
