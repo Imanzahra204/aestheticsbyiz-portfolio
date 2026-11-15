@@ -31,6 +31,6 @@ use the editor.
 
 ## Project rules
 - Single-page portfolio: sections live in `src/components/site/*`, composed in `src/routes/index.tsx`; content (projects, contact links) lives in `src/lib/portfolio-data.ts` so copy changes never touch layout code.
-- Contact form has no backend: it validates with zod (`src/lib/contact.ts`) and hands off via mailto/WhatsApp links — keeps the site backend-free until a real inbox is wanted.
+- Contact form sends via EmailJS from the browser (public key/IDs are publishable, kept in `contact.tsx`), falling back to mailto on failure; WhatsApp stays a wa.me link.
 - Images are Lovable Assets pointers under `src/assets/` (portrait, `work/` covers, `work/<project>/` gallery webps resolved by glob in portfolio-data), never hotlinked, so third-party image hosts can't break the site; videos are embedded YouTube/Facebook players.
 - Avoid framer-motion `AnimatePresence mode="wait"` for looping text; it stalls under React 19 — use keyed `motion` elements instead.
